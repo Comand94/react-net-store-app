@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using react_net_store_core.Services;
 using react_net_store_database;
 using react_net_store_database.Classes;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -29,21 +32,41 @@ void ConfigureServices()
     services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
     services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
-    services.AddCors(options =>
-    {
-        options.AddPolicy("ExpensesPolicy",
-            builder =>
-            {
-                builder.WithOrigins("*")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-    });
-
     services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
+
+    services.AddCors(options =>
+    {
+        options.AddPolicy("StorePolicy",
+            builder =>
+            {
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+    });
+
+    var secret = Environment.GetEnvironmentVariable("JWT_SECRET");
+    var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+
+    services.AddAuthentication(opts =>
+    {
+        opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(opts =>
+    {
+        opts.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidateAudience = false,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret))
+        };
+    });
 }
 
 // Call function declared above
@@ -64,7 +87,7 @@ void Configure()
 
     app.UseRouting();
 
-    app.UseCors("ExpensesPolicy");
+    app.UseCors("StorePolicy");
 
     app.UseAuthentication();
 

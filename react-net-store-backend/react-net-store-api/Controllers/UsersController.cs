@@ -8,7 +8,6 @@ using react_net_store_core.DTO;
 
 namespace react_net_store_api.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -21,9 +20,15 @@ namespace react_net_store_api.Controllers
         }
 
         [HttpGet("IsAdmin")]
-        public IActionResult GetAdminRights(UserDTO user)
+        public IActionResult GetAdminRights(User user)
         {
             return Ok(_userService.HasAdminRights(user));
+        }
+
+        [HttpGet("GetUserById")]
+        public IActionResult GetUserById(long id)
+        {
+            return Ok(_userService.GetUserById(id));
         }
 
         [HttpPost("Sign-up")]
@@ -31,8 +36,8 @@ namespace react_net_store_api.Controllers
         {
             try
             {
-                var result = await _userService.SignUp(user);
-                return Created("", result);
+                var newUser = await _userService.SignUp(user);
+                return CreatedAtRoute("GetUserById", new {id = user.Id}, newUser);
             }
             catch (UsernameTakenException e)
             {
@@ -46,7 +51,7 @@ namespace react_net_store_api.Controllers
             try
             {
                 var result = await _userService.SignIn(user);
-                return Created("", result);
+                return Created("/Users/Sign-in", result);
             }
             catch (InvalidLoginCredentialsException e)
             {

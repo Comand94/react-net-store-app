@@ -13,9 +13,11 @@ namespace react_net_store_core.Services
         private readonly AppDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public bool HasAdminRights(UserDTO user)
+        public bool HasAdminRights(User user)
         {
-            return _context.Admins.Any(a =>
+            return _context.Admins
+                .Include(a => a.User)
+                .Any(a =>
                 a.User.Username == user.Username);
         }
 
@@ -39,13 +41,14 @@ namespace react_net_store_core.Services
             {
                 Username = user.Username,
                 Token = TokenGenerator.GenerateAuthToken(user.Username),
+                IsAdmin = HasAdminRights(user)
             };
         }
 
         public async Task<UserDTO> ExternalSignIn(User user)
         {
             var dbUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.ExternalId.Equals(user.ExternalId) && u.ExternalType.Equals(user.ExternalType));
+            .FirstOrDefaultAsync(u => u.ExternalId.Equals(user.ExternalId) && u.ExternalType.Equals(user.ExternalType));
 
             if (dbUser == null)
             {
@@ -57,6 +60,7 @@ namespace react_net_store_core.Services
             {
                 Username = dbUser.Username,
                 Token = TokenGenerator.GenerateAuthToken(dbUser.Username),
+                IsAdmin = HasAdminRights(user)
             };
         }
 
@@ -81,7 +85,8 @@ namespace react_net_store_core.Services
             return new UserDTO
             {
                 Username = user.Username,
-                Token = TokenGenerator.GenerateAuthToken(user.Username)
+                Token = TokenGenerator.GenerateAuthToken(user.Username),
+                IsAdmin = false
             };
         }
 
@@ -97,6 +102,13 @@ namespace react_net_store_core.Services
             }
 
             return username;
+        }
+
+        public UserDTO GetUserById(long id)
+        {
+            var dbUser = _context.Users
+                .First(u => u.Id == id);
+            return (UserDTO)dbUser;
         }
     }
 

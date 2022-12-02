@@ -32,5 +32,7 @@ namespace react_net_store_database.Classes
 
         public float Rating { get; set; }
 
+        public int RatingCount { get; set; } = 0;
+
     }
 }

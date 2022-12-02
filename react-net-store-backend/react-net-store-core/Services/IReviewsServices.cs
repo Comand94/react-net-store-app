@@ -7,6 +7,7 @@ namespace react_net_store_core.Services
     {
         List<ReviewDTO> GetReviews();
         List<ReviewDTO> GetReviewsByProduct(Product product);
+        ReviewDTO GetReviewByIds(long userId, long productId);
         ReviewDTO AddReview(Review review);
         ReviewDTO UpdateReview(ReviewDTO review);
         void DeleteReview(ReviewDTO review);

@@ -14,10 +14,11 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7254;http://localhost:5254",
+      //"applicationUrl": "https://localhost:7254;http://localhost:5254",
+      "applicationUrl": "http://localhost:8000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JWT_SECRET": "It's 9 o'clock on a Saturday... the regular crowd shuffles in...",
+        "JWT_SECRET": "Hey there, wanna hear our little JWT Secret ;)?",
         "JWT_ISSUER": "React NET Store",
         "CLIENT_ID": "984415961600-mq78aq4ge6vkvfqq5d2sh8v1rj6nue27.apps.googleusercontent.com"
 
@@ -29,7 +30,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JWT_SECRET": "It's 9 o'clock on a Saturday... the regular crowd shuffles in...",
+        "JWT_SECRET": "Hey there, wanna hear our little JWT Secret ;)?",
         "JWT_ISSUER": "React NET Store",
         "CLIENT_ID": "984415961600-mq78aq4ge6vkvfqq5d2sh8v1rj6nue27.apps.googleusercontent.com"
 

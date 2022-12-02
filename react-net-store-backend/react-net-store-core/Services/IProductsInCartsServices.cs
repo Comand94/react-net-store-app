@@ -7,6 +7,7 @@ namespace react_net_store_core.Services
     {
         List<ProductInCartDTO> GetProductsInCarts();
         List<ProductInCartDTO> GetProductsInCartByCart(CartDTO cart);
+        ProductInCartDTO GetProductInCartByIds(long cartId, long productId);
         ProductInCartDTO AddProductInCart(ProductInCart productInCart);
         ProductInCartDTO UpdateProductInCart(ProductInCartDTO productInCart);
         void DeleteProductInCart(ProductInCartDTO productInCart);

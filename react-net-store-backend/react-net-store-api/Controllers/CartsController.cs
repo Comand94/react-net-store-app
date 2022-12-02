@@ -22,17 +22,23 @@ namespace react_net_store_api.Controllers
             return Ok(_cartsServices.GetCarts());
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetCartById")]
         public IActionResult GetCartById(long id)
         {
             return Ok(_cartsServices.GetCartById(id));
-        }        
+        }
+
+        [HttpGet]
+        public IActionResult GetActiveCartByUser(UserDTO user)
+        {
+            return Ok(_cartsServices.GetActiveCartByUser(user));
+        }
 
         [HttpPost]
         public IActionResult AddCart(Cart cart)
         {
                 var newCart = _cartsServices.AddCart(cart);
-                return CreatedAtRoute("AddCart", new {newCart.Id}, newCart);
+                return CreatedAtRoute("GetCartById", new {id = newCart.Id}, newCart);
         }
 
         [HttpPut]

@@ -26,7 +26,13 @@ namespace react_net_store_api.Controllers
         public IActionResult GetReviewsByProduct(Product product)
         {
             return Ok(_reviewsServices.GetReviewsByProduct(product));
-        }        
+        }
+
+        [HttpGet(Name = "GetReviewByIds")]
+        public IActionResult GetReviewByIds(long userId, long productId)
+        {
+            return Ok(_reviewsServices.GetReviewByIds(userId, productId));
+        }
 
         [HttpPost]
         public IActionResult AddReview(Review review)
@@ -34,7 +40,7 @@ namespace react_net_store_api.Controllers
                 var newReview = _reviewsServices.AddReview(review);
                 var productId = newReview.Product.Id;
                 var userId = newReview.Username;
-                return CreatedAtRoute("AddReview", new {productId, userId }, newReview);
+                return CreatedAtRoute("GetReviewByIds", new { userId, productId }, newReview);
         }
 
         [HttpPut]

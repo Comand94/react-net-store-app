@@ -21,7 +21,7 @@ namespace react_net_store_api.Controllers
             return Ok(_productsServices.GetProducts());
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetProductById")]
         public IActionResult GetProductById(long id)
         {
             return Ok(_productsServices.GetProductById(id));
@@ -31,7 +31,7 @@ namespace react_net_store_api.Controllers
         public IActionResult AddProduct(Product product)
         {
                 var newProduct = _productsServices.AddProduct(product);
-                return CreatedAtRoute("AddProduct", new {newProduct.Id}, product);
+                return CreatedAtRoute("GetProductById", new {id = newProduct.Id}, newProduct);
         }
 
         [HttpPut]

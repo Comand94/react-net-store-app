@@ -21,7 +21,7 @@ namespace react_net_store_api.Controllers
             return Ok(_productImagesServices.GetProductImages());
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetProductImageById")]
         public IActionResult GetProductImageById(long id)
         {
             return Ok(_productImagesServices.GetProductImageById(id));
@@ -31,7 +31,7 @@ namespace react_net_store_api.Controllers
         public IActionResult AddProductImage(ProductImage productImage)
         {
                 var newProductImage = _productImagesServices.AddProductImage(productImage);
-                return CreatedAtRoute("AddProductImage", new {newProductImage.Id}, productImage);
+                return CreatedAtRoute("GetProductImageById", new {id = newProductImage.Id}, newProductImage);
         }
 
         [HttpPut]

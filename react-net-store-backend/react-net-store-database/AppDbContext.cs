@@ -21,7 +21,7 @@ namespace react_net_store_database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Server=(localdb)\mssqllocaldb;Database=React-Net-Store-Database;Trusted_Connection=True");
+                @"Server=(localdb)\mssqllocaldb;Database=React-Net-Store-Database;Integrated Security=True;Trusted_Connection=True");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

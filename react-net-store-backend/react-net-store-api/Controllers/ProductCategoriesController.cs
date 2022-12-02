@@ -21,7 +21,7 @@ namespace react_net_store_api.Controllers
             return Ok(_productCategoriesServices.GetProductCategories());
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetProductCategoryById")]
         public IActionResult GetProductCategoryById(long id)
         {
             return Ok(_productCategoriesServices.GetProductCategoryById(id));
@@ -31,7 +31,7 @@ namespace react_net_store_api.Controllers
         public IActionResult AddProductCategory(ProductCategory productCategory)
         {
                 var newProductCategory = _productCategoriesServices.AddProductCategory(productCategory);
-                return CreatedAtRoute("AddProductCategory", new {newProductCategory.Id}, productCategory);
+                return CreatedAtRoute("GetProductCategoryById", new {id = newProductCategory.Id}, newProductCategory);
         }
 
         [HttpPut]

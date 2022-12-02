@@ -6,7 +6,8 @@ namespace react_net_store_core.Services
 {
     public interface IUsersServices
     {
-        public bool HasAdminRights(UserDTO user);
+        public bool HasAdminRights(User user);
+        UserDTO GetUserById(long id);
         Task<UserDTO> SignUp(User user);
         Task<UserDTO> SignIn(User user);
         Task<UserDTO> ExternalSignIn(User user);

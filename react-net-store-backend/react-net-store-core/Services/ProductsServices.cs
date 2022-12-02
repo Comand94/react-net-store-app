@@ -1,5 +1,6 @@
 ﻿using react_net_store_database.Classes;
 using react_net_store_database;
+using Microsoft.EntityFrameworkCore;
 
 namespace react_net_store_core.Services
 {
@@ -14,12 +15,20 @@ namespace react_net_store_core.Services
 
         public List<Product> GetProducts()
         {
-            return _context.Products.ToList();
+            return _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Image)
+                .Include(p => p.Brand)
+                .ToList();
         }
 
         public Product GetProductById(long id)
         {
-            return _context.Products.First(p => p.Id == id);
+            return _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Image)
+                .Include(p => p.Brand)
+                .First(p => p.Id == id);
         }
 
         public Product AddProduct(Product product)
@@ -31,7 +40,11 @@ namespace react_net_store_core.Services
 
         public Product UpdateProduct(Product product)
         {
-            var dbProduct = _context.Products.First(p => p.Id == product.Id);
+            var dbProduct = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Image)
+                .Include(p => p.Brand)
+                .First(p => p.Id == product.Id);
             
             //dbProduct.Id = product.Id;
             dbProduct.Name = product.Name;

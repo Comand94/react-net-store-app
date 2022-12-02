@@ -21,7 +21,7 @@ namespace react_net_store_api.Controllers
             return Ok(_productBrandsServices.GetProductBrands());
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetProductBrandById")]
         public IActionResult GetProductBrandById(long id)
         {
             return Ok(_productBrandsServices.GetProductBrandById(id));
@@ -31,7 +31,7 @@ namespace react_net_store_api.Controllers
         public IActionResult AddProductBrand(ProductBrand productBrand)
         {
                 var newProductBrand = _productBrandsServices.AddProductBrand(productBrand);
-                return CreatedAtRoute("AddProduct", new {newProductBrand.Id}, productBrand);
+                return CreatedAtRoute("GetProductBrandById", new {id = newProductBrand.Id}, newProductBrand);
         }
 
         [HttpPut]

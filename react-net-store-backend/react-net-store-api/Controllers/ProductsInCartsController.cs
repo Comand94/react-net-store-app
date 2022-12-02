@@ -26,7 +26,13 @@ namespace react_net_store_api.Controllers
         public IActionResult GetProductsInCartByCart(CartDTO cart)
         {
             return Ok(_productsInCartsServices.GetProductsInCartByCart(cart));
-        }        
+        }
+
+        [HttpGet(Name = "GetProductsInCartByIds")]
+        public IActionResult GetProductsInCartByIds(long cartId, long productId)
+        {
+            return Ok(_productsInCartsServices.GetProductInCartByIds(cartId, productId));
+        }
 
         [HttpPost]
         public IActionResult AddProductInCart(ProductInCart productInCart)
@@ -34,7 +40,7 @@ namespace react_net_store_api.Controllers
                 var newProductInCart = _productsInCartsServices.AddProductInCart(productInCart);
                 var productId = newProductInCart.Product.Id;
                 var cartId = newProductInCart.Cart.Id;
-                return CreatedAtRoute("AddProductInCart", new {productId, cartId}, newProductInCart);
+                return CreatedAtRoute("GetProductsInCartByIds", new {cartId, productId }, newProductInCart);
         }
 
         [HttpPut]
